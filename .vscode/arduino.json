@@ -1,6 +1,7 @@
 {
+    "sketch": "heater&cooler\\heater&cooler.ino",
     "configuration": "cpu=atmega328old",
     "board": "arduino:avr:nano",
-    "sketch": "weather_staion_without_rf\\weather_staion_without_rf.ino",
-    "port": "COM4"
+    "output": "output",
+    "port": "COM7"
 }

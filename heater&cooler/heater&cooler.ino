@@ -167,7 +167,6 @@ void heater_on_sensor_fault()
   {
     press_rc_button(temp_down_rc_button, false);
   }
-
   for (int i = 0; i < 1; i++)
   {
     press_rc_button(temp_up_rc_button, false);
@@ -198,18 +197,15 @@ void heating_disable()
 
 void ac_ir_command_repeat()
 {
-
   press_rc_button(temp_up_rc_button, false);
   press_rc_button(temp_down_rc_button, true);
 }
-
 float Heater_Dip_Switch_Offset()
 {
   int a_button = !digitalRead(dip_switch_a); // 0.5
   int b_button = !digitalRead(dip_switch_b); // 1.0
   int c_button = !digitalRead(dip_switch_c); // 2.0
   int minus_button = !digitalRead(dip_switch_d);
-
   float result = (a_button * 0.5 + b_button * 1 + c_button * 2);
   if (minus_button)
   {
@@ -217,7 +213,6 @@ float Heater_Dip_Switch_Offset()
   }
   return result;
 }
-
 void ac_cooling_enable()
 {
   for (int i = 0; i < TEMP_UP_STEPS; i++) // steps = 16
@@ -231,7 +226,6 @@ void ac_cooling_enable()
   }
   press_rc_button(temp_down_rc_button, true);
 }
-
 void ac_cooling_disable()
 {
   for (int i = 0; i < TEMP_UP_STEPS; i++) // step =16
@@ -240,7 +234,6 @@ void ac_cooling_disable()
   }
   press_rc_button(temp_up_rc_button, true);
 }
-
 void ac_power_toggle()
 {
   press_rc_button(ac_on_off_rc_button, true);

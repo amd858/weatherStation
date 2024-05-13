@@ -1,5 +1,7 @@
 #include <Arduino.h>
 #line 1 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
+#include <ClosedCube_HDC1080.h>
+
 #include <DHTesp.h>
 #include <Wire.h>
 #include "DFRobot_SHT20.h"
@@ -26,7 +28,6 @@ const int KEY_UP_TIME = 250;
 const int KEY_DOWN_TIME = 50;
 const int TEMP_UP_STEPS = 16;
 const int temp_down_steps = 4;
-
 const float HC_MAX_HIDEX = 27.2;
 const float HC_MIN_HIDEX = 26.8;
 const float ABOVE_ZERO_LEVEL_HUMD = 33;
@@ -40,45 +41,45 @@ unsigned long repeatActionOldTime = 0;
 
 int bounce_count = 0;
 
-#line 41 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
+#line 42 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
 float Dip_Switch_Offset();
-#line 85 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
+#line 86 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
 String ac_state_lcd();
-#line 131 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
+#line 122 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
 void press_rc_button(int rc_button_pin, bool enable_led);
-#line 149 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
+#line 140 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
 void ac_on_sensor_fault();
-#line 163 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
+#line 154 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
 void heater_on_sensor_fault();
-#line 178 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
+#line 168 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
 void heating_enable();
-#line 190 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
+#line 180 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
 void heating_disable();
-#line 199 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
+#line 189 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
 void ac_ir_command_repeat();
-#line 206 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
+#line 194 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
 float Heater_Dip_Switch_Offset();
-#line 221 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
+#line 207 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
 void ac_cooling_enable();
-#line 235 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
+#line 220 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
 void ac_cooling_disable();
-#line 244 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
+#line 228 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
 void ac_power_toggle();
-#line 249 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
+#line 233 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
 void humidifier_on();
-#line 254 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
+#line 238 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
 void humidifier_off();
-#line 258 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
+#line 242 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
 String repeat_action_remaining_time_string_get();
-#line 266 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
+#line 250 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
 void setup();
-#line 327 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
+#line 312 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
 void heater_processing(float min_temp, float max_temp, float room_temp, bool reading_error, bool ac_on_button_on_box);
-#line 577 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
+#line 561 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
 void ac_processing(float min_hidx, float max_hidx, float room_temp, float room_humd, float room_hidx, bool reading_error, bool ac_on_button_on_box);
-#line 827 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
+#line 748 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
 void loop();
-#line 41 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
+#line 42 "D:\\workspace\\ArduinoProjects\\weather station\\summer_17_12_21\\weather_Station_without_rf\\heater&cooler\\heater&cooler.ino"
 float Dip_Switch_Offset()
 {
   int a_button = !digitalRead(dip_switch_a); // 0.5
@@ -126,46 +127,36 @@ unsigned char ac_state = AC_OFF;
 String ac_state_lcd()
 {
   String result = "";
-  static int repeatConter = 0;
   switch (ac_state)
   {
   case AC_OFF:
-    result = "AC_OFF      " + repeat_action_remaining_time_string_get();
-    repeatConter = 0;
+    result = "AC_OFF";
     break;
   case BOUNCING_FOR_AC_ON:
-    if (repeatConter % 2)
-      result = "BOUNCE_FOR_AC_ON";
-    else
-      result = "    BOUNCE      ";
+    result = "BOUNCE_FOR_AC_ON";
     break;
   case AC_ON:
-    result = "AC_ON       " + repeat_action_remaining_time_string_get();
-    repeatConter = 0;
+    result = "AC_ON";
     break;
   case BOUNCING_FOR_AC_OFF:
-    if (repeatConter % 2)
-      result = "BOUNC_FOR_AC_OFF";
-    else
-      result = "    BOUNCE      ";
+    result = "BOUNC_FOR_AC_OFF";
     break;
   case AC_DISABLING:
-    result = "  AC_DISABLING  ";
+    result = "AC_DISABLING";
     break;
   case BOUNCING_FOR_AC_DISABLE:
-    result = "  BOUNC_FOR_DISABL  ";
+    result = "BOUNC_FOR_DISABL";
     break;
   case AC_DISABLED:
-    result = "  AC_DISABLED   ";
+    result = "AC_DISABLED";
     break;
   case BOUNCING_FOR_AC_ENABLE:
     result = "BOUN_FO_AC_ENABL";
     break;
   case COOL_TEMPERATURE_SENSOR_FAULT:
-    result = " !SENSOR_FAULT! ";
+    result = "!SENSOR_FAULT!";
     break;
   }
-  repeatConter++;
   return result;
 }
 
@@ -208,7 +199,6 @@ void heater_on_sensor_fault()
   {
     press_rc_button(temp_down_rc_button, false);
   }
-
   for (int i = 0; i < 1; i++)
   {
     press_rc_button(temp_up_rc_button, false);
@@ -239,18 +229,15 @@ void heating_disable()
 
 void ac_ir_command_repeat()
 {
-
   press_rc_button(temp_up_rc_button, false);
   press_rc_button(temp_down_rc_button, true);
 }
-
-float Heater_Dip_Switch_Offset()
+float  Heater_Dip_Switch_Offset()
 {
   int a_button = !digitalRead(dip_switch_a); // 0.5
   int b_button = !digitalRead(dip_switch_b); // 1.0
   int c_button = !digitalRead(dip_switch_c); // 2.0
   int minus_button = !digitalRead(dip_switch_d);
-
   float result = (a_button * 0.5 + b_button * 1 + c_button * 2);
   if (minus_button)
   {
@@ -258,7 +245,6 @@ float Heater_Dip_Switch_Offset()
   }
   return result;
 }
-
 void ac_cooling_enable()
 {
   for (int i = 0; i < TEMP_UP_STEPS; i++) // steps = 16
@@ -272,7 +258,6 @@ void ac_cooling_enable()
   }
   press_rc_button(temp_down_rc_button, true);
 }
-
 void ac_cooling_disable()
 {
   for (int i = 0; i < TEMP_UP_STEPS; i++) // step =16
@@ -281,7 +266,6 @@ void ac_cooling_disable()
   }
   press_rc_button(temp_up_rc_button, true);
 }
-
 void ac_power_toggle()
 {
   press_rc_button(ac_on_off_rc_button, true);
@@ -322,6 +306,13 @@ void setup()
   pinMode(dip_switch_a, INPUT);
   pinMode(HEATER_MODE, INPUT);
   pinMode(ac_disabled_pin, INPUT);
+
+  // Serial.println("     WELCOME    ");
+  // Serial.println(!digitalRead(ac_disabled_pin));
+  delay(100);
+  HEATER_MODE_SELECTOR = digitalRead(HEATER_MODE);
+  delay(100);
+  
   lcd.init();
   lcd.print("     WELCOME    ");
   Serial.println("     WELCOME    ");
@@ -330,39 +321,33 @@ void setup()
   lcd.setCursor(0, 1);
   if (!digitalRead(ac_disabled_pin))
   {
-    lcd.print("bisable");
-    Serial.println("     bisable    ");
-
+    lcd.print("indoor is off");
+    // Serial.println("     bisable    ");
     ac_state = AC_DISABLED;
     heater_state = HEATER_OFF;
   }
   else
   {
-    lcd.print("enable");
-    Serial.println("     enable    ");
-    lcd.setCursor(0, 2);
-    HEATER_MODE_SELECTOR = digitalRead(HEATER_MODE);
-    Serial.print("     HEATER_MODE_SELECTOR=");
-    Serial.println(HEATER_MODE_SELECTOR);
-    if (HEATER_MODE_SELECTOR)
-    {
-      heating_disable();
-      lcd.print("Heater");
-      Serial.println("     Heater    ");
-    }
-    else
-    {
-      ac_cooling_disable();
-      Serial.println("     Cooler    ");
+    lcd.print("indoor is on");
+    // Serial.println("enable");
+  }
+  lcd.setCursor(0, 2);
 
-      lcd.print("Cooler");
-    }
-    lcd.setCursor(0, 1);
-    lcd.print("active");
+  if (HEATER_MODE_SELECTOR)
+  {
+    lcd.print("ac = Heater");
+    heating_disable();
+    Serial.println("Heater");
+  }
+  else
+  {
+    lcd.print("ac = Cooler");
+    ac_cooling_disable();
+    Serial.println("Cooler");
   }
 
-  lcd.clear();
   delay(1000);
+  lcd.clear();
 }
 
 void heater_processing(float min_temp, float max_temp, float room_temp, bool reading_error, bool ac_on_button_on_box)
@@ -563,7 +548,7 @@ void heater_processing(float min_temp, float max_temp, float room_temp, bool rea
     if (ac_on_button_on_box)
     {
       lcd_location = 0;
-      lcd_message = "ON           OFF";
+      lcd_message = "OFF           ON";
       heater_state = BOUNCING_FOR_HEATER_ON;
       bounce_count = 0;
     }
@@ -596,8 +581,7 @@ void heater_processing(float min_temp, float max_temp, float room_temp, bool rea
 
   case HEATER_TEMPERATURE_SENSOR_FAULT:
     Serial.println("HEATER_TEMPERATURE_SENSOR_FAULT");
-
-    ac_on_sensor_fault();
+    heater_on_sensor_fault();
     if (!reading_error)
     {
       lcd_message = "  SENSOR_FAULT  ";
@@ -621,7 +605,6 @@ void ac_processing(float min_hidx, float max_hidx, float room_temp, float room_h
   if (reading_error)
   {
     if (ac_state != AC_DISABLED && ac_state != AC_DISABLING)
-
     {
       ac_state = COOL_TEMPERATURE_SENSOR_FAULT;
     }
@@ -741,9 +724,6 @@ void ac_processing(float min_hidx, float max_hidx, float room_temp, float room_h
       }
     }
     break;
-
-    ///////////////////////////////
-
   case AC_DISABLING:
     Serial.println("AC_DISABLING");
     bounce_count = 0;
@@ -769,7 +749,6 @@ void ac_processing(float min_hidx, float max_hidx, float room_temp, float room_h
       ac_state = AC_OFF;
     }
     break;
-
   case AC_DISABLED:
     if (ac_on_button_on_box)
     {
@@ -777,8 +756,6 @@ void ac_processing(float min_hidx, float max_hidx, float room_temp, float room_h
       bounce_count = 0;
     }
     break;
-    //////////////////////////
-
   case BOUNCING_FOR_AC_ENABLE:
     Serial.println("BOUNCING_FOR_AC_ENABLE");
     bounce_count++;
@@ -800,7 +777,7 @@ void ac_processing(float min_hidx, float max_hidx, float room_temp, float room_h
     break;
 
   case COOL_TEMPERATURE_SENSOR_FAULT:
-    heater_on_sensor_fault();
+    ac_on_sensor_fault();
     if (!reading_error)
     {
       ac_state = AC_OFF;
@@ -808,66 +785,9 @@ void ac_processing(float min_hidx, float max_hidx, float room_temp, float room_h
     break;
   }
 }
-// void heater_state_lcd()
-// {
-//   String result = "";
-//   static int repeatConter = 0;
-//   static char old_heater_state = heater_state;
 
-//   if (old_heater_state != heater_state)
-//   {
-
-//     old_heater_state = heater_state;
-//     repeatConter = 0;
-//     lcd.print("                ");
-//   }
-
-//   lcd.setCursor(0, 0);
-
-//   switch (heater_state)
-//   {
-//   case HEATING_DISABLE:
-//     lcd.print("Heating OFF " + repeat_action_remaining_time_string_get());
-//     repeatConter = 0;
-//     break;
-//   case BOUNCING_FOR_HEATING_ENABLE:
-//     lcd.print("Disable>Enable");
-//     lcd.setCursor(15, 0);
-//     lcd.print(repeatConter);
-//     break;
-//   case HEATING_ENABLE:
-//     lcd.print("Heating  ON " + repeat_action_remaining_time_string_get());
-//     repeatConter = 0;
-//     break;
-//   case BOUNCING_FOR_HEATING_DISABLE:
-//     lcd.print("Enable>Disable");
-//     lcd.setCursor(15, 0);
-//     lcd.print(repeatConter);
-//     break;
-//   case BOUNCING_FOR_HEATER_OFF:
-//     lcd.print("OFF");
-//     lcd.setCursor(3 + repeatConter, 0);
-//     lcd.print(".");
-//     break;
-
-//   case BOUNCING_FOR_HEATER_ON:
-//     lcd.print("ON");
-//     lcd.setCursor(2 + repeatConter, 0);
-//     lcd.print(".");
-//     break;
-
-//   case HEATER_OFF:
-//     lcd.print("OFF             ");
-//     repeatConter = 0;
-//     break;
-//   case HEATER_TEMPERATURE_SENSOR_FAULT:
-//     break;
-//   }
-//   repeatConter++;
-// }
 void loop()
 {
-
   static float room_humd = 0;
   static float room_temp = 0;
   static float room_hidx = 0;
@@ -895,33 +815,17 @@ void loop()
   }
 
   bool ac_on_button = !digitalRead(ac_disabled_pin);
+  float min_temp = 0;
+  float max_temp = 0;
+  float disier_hidx = 0;
 
   if (HEATER_MODE_SELECTOR)
   {
-    Serial.print("HEATER_MODE_SELECTOR=");
-    Serial.println(HEATER_MODE_SELECTOR);
-
     dip_switch_offset = Heater_Dip_Switch_Offset();
-    float min_temp = 19.8 + dip_switch_offset;
-    float max_temp = 20.2 + dip_switch_offset;
+    min_temp = 19.8 + dip_switch_offset;
+    max_temp = 20.2 + dip_switch_offset;
     heater_processing(min_temp, max_temp, room_temp, reading_error, ac_on_button);
-    lcd.setCursor(0, 1);
-    lcd.print("T" + String(room_temp, 1) + " H" + String(room_humd, 0) + "%");
-    lcd.setCursor(16, 0);
-    lcd.print("S" + String(max_temp - 0.2, 1));
-    lcd.setCursor(9, 2);
-    lcd.print(String(dip_switch_offset, 1));
-    lcd.setCursor(0, 3);
-    if (ac_on_button)
-    {
-      lcd.print("UNIT On    ");
-    }
-    else
-    {
-      lcd.print("UNIT Off   ");
-    }
   }
-
   else
   {
     Serial.print("HEATER_MODE_SELECTOR=");
@@ -930,25 +834,28 @@ void loop()
     max_hidx = HC_MAX_HIDEX + dip_switch_offset;
     min_hidx = HC_MIN_HIDEX + dip_switch_offset;
     ac_processing(min_hidx, max_hidx, room_temp, room_humd, room_hidx, reading_error, ac_on_button);
-    float disier_hidx = max_hidx - 0.2;
-    lcd.setCursor(0, 0);
-    lcd.print(ac_state_lcd());
-    lcd.setCursor(0, 1);
-    lcd.print("T" + String(room_temp, 1) + " H" + String(room_humd, 0) + "%" + " #" + String(room_hidx, 1) + "");
-    lcd.setCursor(14, 0);
-    lcd.print("=");
-    lcd.setCursor(0, 2);
-    lcd.print(String(disier_hidx, 1));
-    lcd.setCursor(0, 3);
-    if (ac_on_button)
-    {
-      lcd.print("UNIT On    ");
-    }
-    else
-    {
-      lcd.print("UNIT Off   ");
-    }
+    disier_hidx = max_hidx - 0.2;
+    lcd.setCursor(11, 1);
+    lcd.print("#" + String(room_hidx, 1));
   }
+  static String oldstate = ac_state_lcd();
+  String newstate = ac_state_lcd();
+  if (oldstate != newstate)
+  {
+    lcd.setCursor(0, 0);
+    lcd.print("                   ");
+    oldstate = ac_state_lcd();
+  }
+  lcd.setCursor(0, 0);
+  lcd.print(ac_state_lcd());
+  if (ac_state == AC_ON || ac_state == AC_OFF) {
+    lcd.setCursor(11, 0);
+    lcd.print(repeat_action_remaining_time_string_get());
+  }
+  lcd.setCursor(0, 1);
+  lcd.print("T" + String(room_temp, 1) + " H" + String(room_humd, 0) + "%");
+  lcd.setCursor(7, 2);
+  lcd.print("*" + String(disier_hidx, 1));
   delay(1000);
 }
 

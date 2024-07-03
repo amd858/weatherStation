@@ -1,7 +1,0 @@
-{
-    "sketch": "heater&cooler\\heater&cooler.ino",
-    "configuration": "cpu=atmega328old",
-    "board": "arduino:avr:nano",
-    "output": "output",
-    "port": "COM5"
-}

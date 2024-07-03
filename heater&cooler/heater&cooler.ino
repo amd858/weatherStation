@@ -1,8 +1,6 @@
 #include <ClosedCube_HDC1080.h>
-
 #include <DHTesp.h>
 #include <Wire.h>
-#include "DFRobot_SHT20.h"
 #include <LiquidCrystal_I2C.h>
 #include <printf.h>
 #include <SPI.h>
@@ -19,8 +17,10 @@
 #define humidifier_indication 14
 #define ac_disabled_pin 11
 
+ClosedCube_HDC1080 hdc1080;
+
 DHTesp dht;
-DFRobot_SHT20 sht20;
+// DFRobot_SHT20 sht20;
 LiquidCrystal_I2C lcd(0x27, 16, 4);
 const int KEY_UP_TIME = 250;
 const int KEY_DOWN_TIME = 50;
@@ -251,9 +251,10 @@ void setup()
 {
   Serial.begin(115200);
   printf_begin();
-  sht20.initSHT20(); // Init SHT20 Sensor
+  hdc1080.begin(0x40);
+  // sht20.initSHT20(); // Init SHT20 Sensor
   delay(300);
-  sht20.checkSHT20(); // Check SHT20 Sensor
+  // sht20.checkSHT20(); // Check SHT20 Sensor
   pinMode(temp_up_rc_button, OUTPUT);
   pinMode(temp_down_rc_button, OUTPUT);
   pinMode(ac_on_off_rc_button, OUTPUT);
@@ -754,8 +755,8 @@ void loop()
   static float min_hidx = 0;
   static float dip_switch_offset = 0;
   static bool reading_error = false;
-  room_temp = sht20.readTemperature(); // Read Temperature
-  room_humd = sht20.readHumidity();    // Read Humidity
+  room_temp = hdc1080.readTemperature(); // Read Temperature
+  room_humd = hdc1080.readHumidity();    // Read Humidity
   if ((room_temp > 10 && room_temp < 60) && (room_humd > 20 && room_humd < 80))
   {
     room_hidx = dht.computeHeatIndex(room_temp, room_humd, false);

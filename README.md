@@ -1,7 +1,3 @@
-Certainly! Below is an expanded README with function names and their respective parameter arguments:
-
----
-
 # Project Title
 
 ## Overview

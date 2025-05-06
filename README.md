@@ -6,7 +6,7 @@ Certainly! Below is an expanded README with function names and their respective 
 
 ## Overview
 
-This Arduino project is designed for controlling temperature and humidity using an AC unit and a heater. It includes functions to handle different states of the AC and heater based on environmental conditions.
+This Arduino project is designed for controlling temperature and humidity using an AC unit. It includes functions to handle different states of the AC and heater based on environmental conditions.
 
 ## Components
 
@@ -51,6 +51,50 @@ This Arduino project is designed for controlling temperature and humidity using 
 
 - Adjust temperature and humidity thresholds in the code as needed.
 - Set DIP switches to configure specific options.
+## IR Remote Timing Extraction Using One-Shot 555 Timer
+
+This section outlines the process of capturing IR remote signals directly from the transmitter side using a one-shot 555 timer circuit. The goal is to extract clean timing data for controlling the AC based on environmental conditions.
+
+### Overview
+
+- **Signal Source**: IR LED of the remote control (transmitter side).
+- **Signal Conditioning**: A one-shot 555 timer circuit is used to truncate the high-frequency carrier, leaving only the main pulse timings.
+- **Data Capture**: A logic analyzer captures the conditioned signal at a 1 MHz sampling rate.
+- **Data Analysis**: PulseView software is utilized to visualize and export the signal data.
+- **Data Conversion**: A Python script processes the exported data, converting it into Pronto codes for AC control.
+
+### Tools and Software
+
+- **PulseView**: A graphical frontend for the sigrok logic analyzer software suite.
+
+  **Download Link**: [https://sigrok.org/wiki/Downloads](https://sigrok.org/wiki/Downloads)
+
+- **Logic Analyzer**: Used to capture the output from the 555 timer circuit.
+
+### Steps to Capture and Process IR Signals
+
+1. **Connect the Logic Analyzer**:
+   - Connect the logic analyzer's input channel (e.g., D0) to the output of the 555 timer circuit.
+   - Ensure the logic analyzer's ground is connected to the common ground of the circuit.
+
+2. **Configure PulseView**:
+   - Open PulseView and select the connected logic analyzer device.
+   - Set the sampling rate to 1 MHz.
+   - Select the appropriate input channel (e.g., D0).
+   - Click "Run" to start capturing the signal.
+
+3. **Export Signal Data**:
+   - After capturing the signal, right-click on the data channel (e.g., D0) and select "Export as...".
+   - Choose "CSV" or "TXT" format and select "Transitions" as the export type.
+   - Save the exported file, which contains timestamped transitions representing the on and off durations of the IR signal.
+
+4. **Convert to Pronto Codes**:
+   - Use a Python script to process the exported data, converting the on and off timings into Pronto codes.
+   - Integrate the generated Pronto codes into your control system to manage the AC based on environmental inputs.
+
+### Application
+
+The processed Pronto codes are used to control the AC unit, adjusting its operation based on the heat index. This integration ensures efficient and responsive climate control within the environment.
 
 ## Function Details
 
